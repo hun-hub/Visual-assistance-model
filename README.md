@@ -65,14 +65,20 @@ End-to-End Process를 구축하여 실제 하드웨어에서 작동하는 것을
 
 	* Fine-tuned
 
-        Open-Flamingo의 zero shot, one shot 약점 보완을 위해 Fine-tuning 진행하였다. Fast mode인만큼 Open-Flamingo의 base model이 너무 무겁다고 판단되어 다른 base model을 이용하여 Fine-tuning 하였다. 
+        Open-Flamingo의 zero shot, one shot 약점 보완을 위해 Fine-tuning 진행하였다. Fast mode 일때 Open-Flamingo를 base model로 하기에는 너무 무겁다고 판단되어 다른 base model을 이용하여 Fine-tuning 하였다. 
    현재는 보행 관련 task에 대해서만 판단하도록 파인튜닝을 하였으며, 실시간성이 요구되는 task에 대해서 main.py를 통해 확장 가능하도록 구축하였다.
 보행 관련 task에 대해서는 현재까지 뛰어난 성능과 실시간성을 보여주고 있다. 
    
      
     
+## 🎁3. 데이터 셋 
 
+* 성능평가
+	* Viz-Wiz (Visual impaired) : 시각 장애인이 찍은 사진 데이터이다. 시각 장애인은 시야가 부분적으로 제한되기에, 그들이 찍은 사진에는 Obscured(occlusion), blur, rotation을 포함한다. 따라서, 모델이 이에도 강건하게 대응할 수 있는지 평가하기 위해 사용
+ 	* 안경 카메라(직접) : 시중에 판매하는 안경 카메라를 사용해 실제 보행 관련 장면을 녹화하였다. 저가 초소형 카메라이기에 화질이 좋지 않았음에도, 모델이 잘 판단함을 확인할 수 있었다.   
 
+* Fine - tuning
+	* WOTR(Walk On The Road) Dataset : 보행 관련 이미지를 담고 있는 데이터 셋으로, 파인 튜닝에 이용하였다.   	
 
 
 
