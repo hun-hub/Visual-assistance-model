@@ -40,5 +40,43 @@ End-to-End Process를 구축하여 실제 하드웨어에서 작동하는 것을
 		따라서, **detail mode의 zero-shot, fast mode**에는 **사용 x**
 
       반면, **detail mode의 few shot**의 경우 s키를 사용하여 모델에 정보를 제공해야 함. 이때, 캡처에 대한 **description text**를 넘겨주어야 하는데, 시각장애인임을 고려하여 음성 입력을 받아(stt) 넘겨주도록 구현
+  * Q key
+    * q키의 경우 query 키로, 물어보고 싶은 순간의 장면을 캡처하는 것. 다시 말해, q키로 이미지를 캡처하면 프로그램(모델)을 통해 Image에 맞는 Captioning(설명)을 생성하여 넘겨주게 된다. 
+		이때 제공되는 설명의 경우, 시각장애인임을 고려하여 음성을 출력하는(tts) 형태로 출력
+## 🔍2. 성능평가 & 파인튜닝 
 
-      
+* **Open-Flamingo (Detail mode base model)**
+  파인튜닝을 하지 않았을 때에도, 다양한 도메인 영역에서 Bert Score, CIDEr, BLEU와 같은 평가 지표에서 괜찮은 성능과 인간이 판단했을 때에도(Human-in-the-loop) 합리적 
+
+
+	논문에서는 1,3,9,16 shot과 같이 shot을 늘릴수록 성능이 선형적으로 증가한다고 나와있지만, Viz-Wiz (시각 장애인이 찍은 데이터 셋)와 같은 데이터 셋으로 실제 평가를 진행하였을 때, 우리의 task의 경우 간단해서인지 shot의 수를 zero 혹은 one으로도 충분했으며, 오히려 shot이 높아질수록 논문과 다르게 attention을 수월하게 하지 못함을 보임( 너무 detail 한 정보에 집중하는 것으로 예상)
+
+	*  Zero shot  
+**large context**에서 어느 정보에 집중할지 모르는 것과 같은 캡셔닝을 하였다.
+이는 시각장애인 task에서 **Critical** 함. 예를 들어 단일 횡단보도 이미지에 대해서 'An image of a zebra crossing in China.' 와 같이 횡단보도를 zebra로 인식하거나, 신호등 사진에 대해 'An image of an Australian traffic light.' 와 같이 국적과 같은 주요 정보가 아닌 정보를 제공하고 중요한 정보인 신호등의 색은 제외하는 등의 문제를 보였다. 
+   
+
+   	*  One shot
+
+        shot이 hint와 같은 역할을 하기에 비교적 안정적 성능을 보였지만, shot을 주기 위해서 이미지와 그에 대한 text를 모델에 제공해주어야 하는데, 시각장애인의 특성을 고려했을 때 쉽지 않으며 순간적인 판단이 필요한 task에서 이는 더 **critical** 할 것으로 예상된다.
+
+
+* **Microsoft/git-base  (Fast mode base model)**
+
+	* Fine-tuned
+
+        Open-Flamingo의 zero shot, one shot 약점 보완을 위해 Fine-tuning 진행하였다. Fast mode인만큼 Open-Flamingo의 base model이 너무 무겁다고 판단되어 다른 base model을 이용하여 Fine-tuning 하였다. 
+   현재는 보행 관련 task에 대해서만 판단하도록 파인튜닝을 하였으며, 실시간성이 요구되는 task에 대해서 main.py를 통해 확장 가능하도록 구축하였다.
+보행 관련 task에 대해서는 현재까지 뛰어난 성능과 실시간성을 보여주고 있다. 
+   
+     
+    
+
+
+
+
+
+   
+
+
+
